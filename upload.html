@@ -1,0 +1,10 @@
+{% comment %} This page is for Text File uploading to data base page {% endcomment %}
+
+<head>
+    <h1><em><b>Upload Text File Here</b></em></h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+</head>

@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block title %}All about Sarthak{% endblock title %}
+{% block body %}
+{% load static %}
+<style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+  }
+
+  html {
+    box-sizing: border-box;
+  }
+
+  *,
+  *:before,
+  *:after {
+    box-sizing: inherit;
+  }
+
+  .column {
+    float: left;
+    width: 100%;
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
+
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 8px;
+  }
+
+  .about-section {
+    padding: 50px;
+    text-align: center;
+    background-color: #474e5d;
+    color: white;
+    font-size: 20px;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  .container::after,
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  .title {
+    color: grey;
+  }
+
+  .button {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .button:hover {
+    background-color: #555;
+  }
+
+  .button {
+    color: aliceblue;
+    font-size: 25px;
+  }
+
+  .logo {
+    border-radius: 150px;
+    width: 100%;
+    max-width: 150px;
+  }
+
+  @media screen and (min-width: 768px) {
+    .column {
+      width: 33.3%;
+      display: block;
+    }
+  }
+</style>
+<div class="about-section" id="about">
+  <img src="{% static 'logo1-modified.png' %}" alt="Jane" class="logo">
+  <h3>About Sarthak</h3>
+  <h1 style="font-family: cursive">Your Sarthi From Smile to Sign</h1>
+  <p>We at <i style="font-weight: bold;">SARTHAK</i> help bridge the gap between the two
+    communities. <br>By providing them a way of communication with each other as well as with
+    normal people.<br>Sarthak offers two-way communication, i.e., Sign to Speech Conversion and Speech to 3D
+    Animated Sign Gestures</p>
+</div>
+
+<h2 style="text-align:center">Our Team</h2>
+<div class="row">
+  <div class="column">
+    <div class="card">
+      <img src="{% static 'sanket.jpeg' %}" alt="Jane" style="width:100%">
+      <div class="container">
+        <h2>Sanket Gadhe</h2>
+        <p class="title">Back-end Developer & Front-end Developer</p>
+        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+        <p>sanketgadhe366@gmail.com</p>
+        <p><a href="mailto:sanketgadhe366@gmail.com"><button class="button">
+              Contact</button></a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card">
+      <img src="{% static 'gaurav.jpg' %}" alt="Mike" style="width:100%">
+      <div class="container">
+        <h2>Gaurav Birari</h2>
+        <p class="title">Data Set Creator</p>
+        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+        <p>gauravbirari07@gmail.com</p>
+        <p> <a href="mailto:gauravbirari07@gmail.com"><button class="button">Contact</button></a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card">
+      <img src="{% static 'tejaswini.jpg' %}" alt="John" style="width:100%">
+      <div class="container">
+        <h2>Tejaswini Buwa</h2>
+        <p class="title">Machine Learning Model Trainer</p>
+        <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+        <p>tejbuwa06@gmail.com</p>
+        <p><a href="mailto:tejbuwa06@gmail.com"><button class="button">Contact</button></a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ context }}
+{% include 'footer.html' %}
+{% endblock body %}

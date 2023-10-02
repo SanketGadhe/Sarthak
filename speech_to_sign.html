@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% block title %}Speech to Sign- Converts Human Language to Speech{% endblock title %}
+{% block body %}
+{% load static %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<STYLE>
+    .container-fluid {
+        border-radius: 3ch;
+    }
+
+    .text {
+        border-radius: 3ch;
+    }
+
+    .col {
+        padding: 10px;
+    }
+
+    input {
+        padding: 5%;
+        width: 100%;
+        border: none;
+        border-radius: 1ch;
+        margin-bottom: 10px;
+    }
+
+    audio {
+        width: 100%;
+    }
+
+    .button-container {
+        text-align: center;
+    }
+
+    .button {
+        display: inline-block;
+        border: none;
+        background: darkslategray;
+        color: #fff;
+        padding: 10px 25px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background 0.3s ease;
+        transition: transform .2s;
+        margin: 10px;
+    }
+
+    .button:hover {
+        background: rgb(25, 181, 198);
+        text-decoration: none;
+        transform: scale(1.1);
+        color: #fff;
+    }
+
+    .video-container {
+        max-width: 100%;
+        margin: auto;
+        text-align: center;
+    }
+
+    #video {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .col-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .col-content div {
+        margin-bottom: 10px;
+    }
+
+    @media screen and (max-width: 768px) {
+        .col-content {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .col-content div {
+            margin-bottom: 0;
+            margin-right: 10px;
+        }
+
+        .button-container {
+            margin-top: 10px;
+        }
+    }
+</STYLE>
+
+<div class="container-fluid my-4">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col col-lg-1">
+                <a class="btn btn-light mx-4" href="{% url 'our_model' %}">Back</a>
+            </div>
+            <div class="col text-center" style="background-color: antiquewhite;">
+                <h3 style="color: darkslategray;">WELCOME TO SPEECH TO 3D SIGN ANIMATED GESTURES MODULE</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid my-4 bg-light">
+        <div class="container-fluid m-2">
+            <div class="row">
+                <div class="col-content col-lg-6">
+                    <div>
+                        <h4 class="text-center my-2" style="color: darkslategray;">SPEECH INPUT</h4>
+                        <div class="container-fluid text-center" style="height: 80%;">
+                            <audio id="myAudio">
+                                <source src="C://Users//sanke//Desktop//Sarthak//Sanket Website//Signage//signage//Home//Trail//speak.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+                    <div>
+                        <h5 style="color:green"><b>YOU SAID:</b></h5>
+                        <input type="text" placeholder="Word is ......" value="{{ you_said }}" style="font-size: 25px;" default="{{ you_said }}">
+                    </div>
+                    <div>
+                        <h5 style="color:green"><b>ISL FRAMED SENTENCE:</b></h5>
+                        <input type="text" placeholder="Word is ......" value="{{ isl_framed }}" style="font-size: 25px;" default="{{ isl_framed }}">
+                    </div>
+                    <div class="button-container">
+                        <a id="playButton" class="button btn btn-info" href="{% url 'speak' %}">Speak</a>
+                    </div>
+                </div>
+
+                <div class="col text-center">
+                    <h1>List of Videos</h1>
+                    <div class="video-container">
+                        <video id="video" muted></video>
+                    </div>
+                    <script>
+                        let videoList = "{{video_list|safe}}";
+                        videoList = JSON.parse(videoList.replace(/'/g, '"'));
+                        const videoElement = document.getElementById('video');
+                        let currentVideoIndex = 0;
+
+                        function preloadNextVideo() {
+                            const nextVideoIndex = currentVideoIndex + 1;
+                            if (nextVideoIndex < videoList.length) {
+                                const preloadElement = new Audio();
+                                preloadElement.src = path + videoList[nextVideoIndex];
+                            }
+                        }
+
+                        function playNextVideo() {
+                            if (currentVideoIndex >= videoList.length) {
+                                videoElement.pause();
+                                return;
+                            }
+                            path = "/media/videos/23/"
+                            videoElement.src = path + videoList[currentVideoIndex];
+
+                            preloadNextVideo()
+                            videoElement.play();
+                            currentVideoIndex++;
+                        }
+
+                        videoElement.addEventListener('ended', playNextVideo);
+                        playNextVideo();
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ context }}
+{% include 'footer.html' %}
+{% endblock body %}

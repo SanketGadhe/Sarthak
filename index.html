@@ -1,0 +1,261 @@
+
+ {% extends 'base.html' %}
+{% block title %}Home{% endblock title %}
+{% block body %}
+{% load static %}
+<style>body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.about-section {
+  padding: 50px;
+  text-align: center;
+  background-color: #474e5d;
+  color: white;
+  font-size: 20px;
+}
+
+.about-section img.logo {
+  border-radius: 150px;
+  width: 20%;
+}
+
+.column {
+  float: left;
+  width: 33.3%;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin: 8px;
+}
+
+.container {
+  padding: 0 16px;
+}
+
+.title {
+  color: grey;
+}
+.button {
+  border: none;
+  outline: 0;
+  display: inline;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+}
+.button:hover {
+  background-color: #555;
+}
+
+.button:hover, .button:focus {
+  color: white;
+  text-decoration: none;
+  outline: none;
+}
+
+
+@media screen and (max-width: 650px) {
+  .column {
+      width: 100%;
+      display: block;
+  }
+}
+
+.my-5 {
+  width: 100%;
+ 
+}
+.carousel-inner img {
+    height: auto; /* Allow the height to adjust based on the image aspect ratio */
+  }
+  .carousel-inner {
+    max-height: 600px; /* Set a maximum height for the carousel on mobile */
+  }
+
+.container-fluid.my-4.px-0 img {
+  width: 100%;
+
+}
+
+.container.my-4 img {
+  width: 100%;
+
+}
+
+.bg-light img {
+  width: 100%;
+  height: auto;
+}
+
+.card-body p {
+  font-size: 16px;
+}
+
+.btn-group a.btn {
+  font-size: 16px;
+  margin: 0.5rem 0;
+}
+</style>
+<div class="main">
+<div class="container-fluid my-4 px-0">
+  <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" data-interval="2000">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+      <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+      <li data-target="#carouselExampleCaptions" data-slide-to="3"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{% static 'sign-language-with-hands-studio (1).jpg' %}" alt="image1" class="d-block w-100">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Children of Anand Niwas School</h5>
+          <p>Learning through Sign</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'sign-language-with-hands-studio (2).jpg' %}" alt="image2">
+
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Performing Sign Actions</h5>
+          <p>Using Indian Sign Language</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'sign-language-with-hands-studio.jpg' %}" alt="image3">
+
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Anand Niwas School Dhule</h5>
+          <p>School for deaf and mute people eduacating and communicating using sign language.</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'sign-language-with-hands-studio (3).jpg' %}" alt="image3">
+
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Anand Niwas School Dhule</h5>
+          <p>School for deaf and mute people eduacating and communicating using sign language.</p>
+          
+        </div>
+      </div>
+      <!-- Add more carousel items as needed -->
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+</div>
+
+<div class="container">
+  <h1 class="my-4 text-center" style="color: darkslategray;">What we do at Sarthak</h1>
+  <p style="color:grey"> <i>We at <b style="color:black">SARTHAK</b> are here to bridge the gap between the two communities. By Providing them the way of communication with each other as well as with normal people. Sarthak can offer a two-way communication i.e. Sign to Speech Conversion and Speech to 3D Animated Sign Gestures</i></p>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="bg-light p-3">
+        <img src="{% static 'sign 2 speech.jpg' %}" alt="image3" class="img-fluid zoom">
+        <p class="text-center my-4" style="color:green"><b>SIGN TO SPEECH CONVERSION MODULE</b></p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="bg-light p-3">
+        <img src="{% static 'speech to sign.jpg' %}" alt="image3" class="img-fluid zoom">
+        <p class="text-center my-4" style="color:green"><b>SPEECH TO 3D SIGN ANIMATED GESTURES</b></p>
+      </div>
+    </div>
+  </div>
+  <div class="text-center my-4">
+    <a class="button" href="{% url 'our_model' %}">Let's Start</a>
+  </div>
+</div>
+
+<div class="container">
+  <h1 class="my-3 text-center" style="color: darkslategray;">Awareness for Deaf and Mute Community</h1>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
+        <img class="zoom" src="{% static 'deaf2.jpeg' %}" alt="image3" width="100%" height="225">
+
+        <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
+        <div class="card-body">
+          <p class="card-text">The second largest country in the world, <b><i>India</i></b>, is home to approximately 63
+            million people of the deaf and hard of hearing community (DHH).</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group text-center">
+
+
+              <a class="btn btn-dark" href="https://www.hearinglikeme.com/notes-from-indias-deaf-community/">View <span
+                  class="sr-only">(current)</span></a>
+
+            </div>
+            <!-- <small class="text-muted">9 mins</small> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
+        <img class="zoom" src="{% static 'educate1.jpg' %}" alt="image3" width="100%" height="225">
+
+        <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
+        <div class="card-body">
+          <p class="card-text"><b><i>AIDDS</i></b> has been striving hard to achieve the goal of total rehabilitation
+            for the hearing impaired children who on a large extent are ignored .</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group text-center">
+              <a class="btn btn-dark" href="https://www.deafanddumbsociety.org/">View <span
+                  class="sr-only">(current)</span></a>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
+        <img class="zoom" src="{% static 'adult-women-communicating-through-sign-language.jpg' %}" alt="image3" width="100%" height="225">
+
+        <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
+        <div class="card-body">
+          <p class="card-text">Indiansignlanguage.org offers a huge collection of <b><i>Indian Sign
+                Language</i></b>(ISL) signs. Each sign has an image, running video and threaded discussions.</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <a class="btn btn-dark" href="http://www.islrtc.nic.in/">View <span class="sr-only">(current)</span></a>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{{ context }}
+{% include 'footer.html' %}
+{% endblock body %}

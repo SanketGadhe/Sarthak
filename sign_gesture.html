@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+{% block title %}Our Services- 
+Sign Language Video Dictionary{% endblock title %}
+{% block body %}
+{% load static %}
+
+<style>
+    table {
+        border: 2px solid #343a40;
+        background-color: rgb(232 242 253 / 50%);
+        border-radius: 5px;
+    }
+
+    .table thead th {
+        border-bottom: black;
+    }
+    #no-result{
+        display: none;
+    }
+
+    .word-link {
+        font-size: 20px;
+        color: rgb(73, 101, 87);
+    }
+
+    .alphabet {
+        margin: 10px;
+        padding: 10px;
+        border: 2px solid black;
+    }
+    .text-danger {
+    color: #dc3545!important;
+    font-size: 25px;
+}
+    .letter {
+        display: inline;
+        margin: 3px;
+        padding-bottom: 1px;
+        border: 2px solid #0e4315;
+        background-color: rgb(101 191 242);
+        border-radius: 8px;
+
+    }
+
+    .video-container {
+        text-align: center;
+
+        margin: 20px;
+    }
+
+    .video-container p {
+        font-size: 40px;
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .letter a {
+        color: black;
+
+    }
+    @media screen and (max-width: 768px) {
+    .alphabet {
+      text-align: center;
+    }
+    .letter {
+      margin: 5px;
+    }
+    .table td {
+      font-size: 16px;
+    }
+    .video-container p {
+      font-size: 24px;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    .video-container p {
+      font-size: 20px;
+    }
+  }
+
+  @media screen and (max-width: 420px) {
+    .word-link {
+      font-size: 18px;
+    }
+  }
+
+  @media screen and (max-width: 320px) {
+    .word-link {
+      font-size: 16px;
+    }
+  }
+</style>
+
+</style>
+
+
+<div class="container-fluid my-4">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col col-lg-1">
+                <a class="btn btn-light mx-4" href="{% url 'index' %}" id="no">Back</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <!-- Add the search form -->
+    <div class="row">
+        <div class="col">
+            <form id="search-form" class="form-inline">
+                <input type="text" class="form-control mr-2" id="search-input" placeholder="Search" id="no">
+                <button type="submit" class="btn btn-primary" id ="no">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+ 
+                <div class="video-container d-none">
+                                   
+<div class="container-fluid my-4">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col col-lg-1">
+                <a class="btn btn-light mx-4" href="{% url 'sign_gesture' %}" id="no">Back</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+                    <video controls width="600" height="400" src="" id="video-source" autoplay>
+                        Your browser does not support the video tag.
+                    </video>
+                    <!-- Display the word name -->
+                    <p id="word-name"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add this below the alphabetical index -->
+
+
+
+    <div class="row">
+        <div class="col">
+            <p id="no-result" class="text-center text-danger">No such word found</p>
+        </div>
+    </div>
+    <!-- Add the alphabetical index -->
+    <div class="alphabet no-results"> 
+        <div class="row no-results">
+            <div class="col text-center no-results">
+                <ul class="list-inline"  class="no-results">
+                    {% for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' %}
+                    <div class="letter" class="no-results">
+                        <li class="list-inline-item mx-2" id="no-results" class="no-results"><a href="#{{ letter }}" class="no-results">{{ letter }}</a></li>
+                    </div>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Display words by letter -->
+    {% for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' %}
+    <div id="{{ letter }}" class="no-results">
+        <h2 id="no">{{ letter }}</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Word</th>
+                </tr>
+            </thead>
+            <tbody id="no-results">
+                {% for word in words %}
+                {% if word.word|first == letter %}
+                <tr>
+                    <td>
+                        <a href="#" data-video="{{ word.video_url }}" class="word-link" id="no-results">{{ word.word }}</a>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    
+    $(document).ready(function () {
+        $('.word-link').click(function (e) {
+            e.preventDefault();
+            var videoUrl = $(this).data('video');
+            var wordName = $(this).text(); // Get the word name
+            $('#video-source').attr('src', videoUrl);
+            $('.video-container').removeClass('d-none');
+            $('.table').hide();
+            $('#no').hide();
+            $('#no-results').hide();
+            $('.no-results').hide();
+            $('#word-name').text(wordName); // Set the word name
+        });
+
+        $('#search-form').submit(function (e) {
+            $('#results').hide();
+            e.preventDefault();
+            var searchTerm = $('#search-input').val().toLowerCase();
+            var found = false; // Flag to track if any word is found
+
+            $('.word-link').each(function () {
+                var word = $(this).text().toLowerCase();
+                if (word.includes(searchTerm)) {
+                    $(this).parent().parent().show();
+                    found = true; // Set flag to true if any word is found
+                } else {
+                    $(this).parent().parent().hide();
+                }
+            });
+
+            // Toggle the visibility of the placeholder message based on the 'found' flag
+            if (found) {
+                $('#no-result').hide();
+            } else {
+                $('#no-result').show();
+            }
+
+            // Check if there are any visible rows in each letter section
+            $('.table').each(function () {
+                if ($(this).find('tbody tr:visible').length === 0) {
+                    $(this).closest('div[id]').hide();
+                } else {
+                    $(this).closest('div[id]').show();
+                }
+            });
+        });
+    });
+
+
+</script>
+
+{{ context }}
+{% include 'footer.html' %}
+{% endblock body %}

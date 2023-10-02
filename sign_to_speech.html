@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% block title %}Sign To Speech- Converts Sign Language to Speech{% endblock title %}
+{% block body %}
+{% load static %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    .zoom {
+        transition: transform .2s;
+        margin: 0 auto;
+    }
+
+    .zoom:hover {
+        transform: scale(1.1);
+    }
+
+    .button-container {
+        text-align: center;
+    }
+
+    .button {
+        display: inline-block;
+        margin: 0 10px;
+        border: none;
+        background: darkslategray;
+        color: #fff;
+        padding: 10px 25px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background 0.3s ease;
+        transition: transform .2s;
+    }
+
+    .button:hover {
+        background: rgb(25, 181, 198);
+        text-decoration: none;
+        transform: scale(1.1);
+        color: #fff;
+    }
+
+    .input-container {
+        text-align: center;
+    }
+
+    input {
+        padding: 5%;
+        width: calc(100% - 10px);
+        border: none;
+        box-shadow: 5ch;
+        border-radius: 1ch;
+    }
+
+    .container-fluid {
+        border-radius: 3ch;
+    }
+
+    .text {
+        border-radius: 3ch;
+    }
+
+    /* Media Queries for Responsive Design */
+
+    @media screen and (max-width: 767px) {
+        .button-container {
+            margin-top: 20px; /* Add some space between the buttons */
+        }
+        .button {
+            display: block;
+            margin: 10px auto; /* Center the buttons */
+        }
+    }
+</style>
+
+
+
+
+<div class="container-fluid my-4">
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col col-lg-1">
+                <a class="btn btn-light mx-4" href="{% url 'our_model' %}">Back</a>
+            </div>
+            <div class="col text-center" style="background-color: antiquewhite;">
+                <h3 style="color: darkslategray;">WELCOME TO GESTURES TO SPEECH MODULE</h3>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid my-5 bg-light">
+        <div class="container-fluid m-2">
+            <div class="row bg-light">
+                <div class="col col-lg-6" style="border: 2px solid black;">
+                    <div id="video-container">
+                        <img id="gif" src="../static/hello.gif" width="80%">
+                        <img id="video-feed" src="" width="100%">
+                    </div>
+                    <script>
+                        function showVideoFeed() {
+                            let videoContainer = document.getElementById('video-container');
+                            let videoElement = document.getElementById('video-feed');
+                            let gifElement = document.getElementById('gif');
+
+                            videoElement.src = "{% url 'video_feed' %}";
+                            gifElement.style.display = 'none';
+                        }
+                    </script>
+                </div>
+                <div class="col">
+                    <h3 class="text-center my-2" style="color: darkslategray;">PREDICTED RESULTS</h3>
+                    <div class="input-container">
+                        <div>
+                            <h5 style="color:green"><b>Words:</b></h5>
+                            <input type="text" placeholder="Words are.." value="{{ predicted_Word }}"
+                                   default="{{ predicted_Word }}">
+                        </div>
+                        <div>
+                            <h5 style="color:green"><b>SENTENCE:</b></h5>
+                            <input type="text" placeholder="Proper Sentence is..." value="{{ predicted_sentence }}"
+                                   default="{{ predicted_sentence }}">
+                        </div>
+                        <div class="button-container">
+                            <a href="{% url 'predict' %}" class="button btn btn-info">Speech</a>
+                            <button id="capture-sign" onclick="showVideoFeed()" class="button btn btn-info">Capture Sign</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid my-4">
+        <div class="row">
+            <div class="col col-lg-6 text-center"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+</div>
+
+{{ context }}
+{% include 'footer.html' %}
+{% endblock body %}

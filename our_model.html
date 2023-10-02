@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %}Our Services
+Sign To Speech | Speech to Sign{% endblock title %}
+{% block body %}
+{% load static %}
+<style>
+    .zoom {
+      /* padding: 50px;
+      background-color: green; */
+      transition: transform .2s; /* Animation */
+      /* width: 200px;
+      height: 200px; */
+      margin: 0 auto;
+    }
+    
+    .zoom:hover {
+      transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    }
+     .button {
+                display: inline-block;
+                border: none;
+                background: gray;
+                color: #fff;
+                padding: 10px 25px;
+                font-size: 16px;
+                cursor: pointer;
+                border-radius: 4px;
+                transition: background 0.3s ease;
+                transition: transform .2s; /* Animation */
+            }
+
+            .button:hover {
+                background: rgb(25, 181, 198);
+                text-decoration: none;
+                transform: scale(1.1);
+                color: #fff;
+            }
+    </style>
+<div class="container-fluid m-2">
+    <div class="container my-4"><h3 class='text-center' style="color:darkslategrey; text-transform: uppercase;">Sarthak compries of mainly two modules</h3></div>
+    <div class="container-fluid m-2" >
+        <div class="container-fluid m-2">   
+            <div class="row bg-light">
+              <div class="col col-lg-4">
+                <img  class="zoom"src="{% static 'sign 2 speech.jpg' %} "  alt="image3" width="100%" height="260">
+              </div>
+              <div class="col">
+                <h3 class="my-4 mx-2" style="color:cadetblue;">SIGN TO SPEECH MODULE
+                </h3>
+                <p style="color:darkslategray"><b>This module focuses on Interpreting the Sign Gestures collecting from live camera 
+                    input <br> transforming it into words and forming sentence aggregating 
+                    all actions follwed by 
+                    <br>Speech as a ouptut</b>
+                </p>
+                <div class=" my-4">
+                    <a class="button" href="{% url 'sign_to_speech' %}">Explore Module</a>
+                    </div>
+              </div>
+            </div>
+            <div class="row my-4 bg-light">
+                <div class="col col-lg-4">
+                  <img  class="zoom"src="{% static 'speech to sign.jpg' %} "  alt="image3" width="100%" height="260">
+                </div>
+                <div class="col">
+                    <h3 class="my-4" style="color:cadetblue;">SPEECH TO 3D ANIMATED GESTURES
+                    </h3>
+                    <p style="color:darkslategray"><b>This Module Focuses on transforming Speech input of normal peoples into text followed by Actions<br>words extracting and Producing 
+                        3D animated Gestures for each words and presenting as whole <br>sentence Sign language action </b>
+                    </p>
+                    <div class=" my-4">
+                        <a class="button" href="{% url 'speech_to_sign' %}">Explore Module</a>
+                        </div>
+                </div>
+              </div>
+        
+
+          </div>
+    </div>
+  
+   
+
+
+</div>
+
+{{ context }}
+{% include 'footer.html' %}
+{% endblock body %}
