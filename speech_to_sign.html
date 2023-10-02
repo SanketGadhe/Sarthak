@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Sign Language</title>
+    <title>Speech To Sign</title>
     <style>
       .navbar {
         min-height: 100px; /* Increase the height for better visibility on smaller screens */
@@ -136,7 +136,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col col-lg-1">
-                <a class="btn btn-light mx-4" href="{% url 'our_model' %}">Back</a>
+                <a class="btn btn-light mx-4" href="our_model.html">Back</a>
             </div>
             <div class="col text-center" style="background-color: antiquewhite;">
                 <h3 style="color: darkslategray;">WELCOME TO SPEECH TO 3D SIGN ANIMATED GESTURES MODULE</h3>
@@ -159,11 +159,11 @@
                     </div>
                     <div>
                         <h5 style="color:green"><b>YOU SAID:</b></h5>
-                        <input type="text" placeholder="Word is ......" value="{{ you_said }}" style="font-size: 25px;" default="{{ you_said }}">
+                        <input type="text" placeholder="Word is ......" value="You Said" style="font-size: 25px;" default="{{ you_said }}">
                     </div>
                     <div>
                         <h5 style="color:green"><b>ISL FRAMED SENTENCE:</b></h5>
-                        <input type="text" placeholder="Word is ......" value="{{ isl_framed }}" style="font-size: 25px;" default="{{ isl_framed }}">
+                        <input type="text" placeholder="Word is ......" value="ISL Sentence" style="font-size: 25px;" default="{{ isl_framed }}">
                     </div>
                     <div class="button-container">
                         <a id="playButton" class="button btn btn-info" href="{% url 'speak' %}">Speak</a>
