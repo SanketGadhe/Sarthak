@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.special{
+   
+    font-family: inherit;
+    font-style: normal;
+    background: linear-gradient(90deg, #6ce8db, #d578d7 16.7%, #ed6f71 33.3%, #f6cc4c 50%, #ed6f71 66.7%, #d578d7 83.3%, #6ce8db);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: saturate(1.2);
+    background-size: 400% 400%;}
+    *{
+        scroll-behavior: smooth;
+    }
+/* .toggle
+{
+    transition:all 1.3s;
+} */
