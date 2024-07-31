@@ -16,3 +16,5 @@ for filename in os.listdir(directory):
 
 # Print the list of words
 print(words)
+
+    

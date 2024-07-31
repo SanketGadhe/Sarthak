@@ -12,9 +12,9 @@ const Sign = () => {
         </i>
       </div>
       <div className="main flex flex-col md:flex-row justify-center items-center gap-5 mt-5">
-        <div className="video w-[40%]  bg-[#202020] px-8 py-6 rounded-xl">
+        {/* <div className="video w-[40%]  bg-[#202020] px-8 py-6 rounded-xl">
           <video src="static/demo.mp4" autoPlay></video>
-        </div>
+        </div> */}
         <div className="content w-full md:w-2/3">
           <div className="cohead font-bold text-2xl">
             Directly translate the Live Sign Language into audio
@@ -24,7 +24,7 @@ const Sign = () => {
             <div className="capbutton rounded-xl px-8 py-4 bg-[#202020] text-white flex justify-center items-center text-lg font-bold">
               <button onClick={
                 ()=>{
-                  alert('Currently the page sign to speech is not working due to deployment')
+                  alert('Currently the page sign to speech is not working')
                 }
               }>
                 <div className="flex justify-center items-center gap-1">
