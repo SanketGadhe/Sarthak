@@ -1,7 +1,7 @@
 import os
 
 # Directory path
-directory = './static/PortraitVideo/Long_Words'
+directory = './static/anima'
 
 # List to store words
 words = []

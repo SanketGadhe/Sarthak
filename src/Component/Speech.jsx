@@ -1,139 +1,1500 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaMicrophone } from "react-icons/fa";
 import axios from "axios";
+
 const VideoPlayer = ({ videoList }) => {
-  const videoRef = useRef(null);
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const totalVideos = videoList.length;
-  const [playedVideosCount, setPlayedVideosCount] = useState(0);
-
+  var [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   useEffect(() => {
-    const playNextVideo = () => {
-      if (playedVideosCount < totalVideos - 1) {
-        setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % totalVideos);
-        setPlayedVideosCount((count) => count + 1);
-      } else {
-        // Pause at the last video
-        videoRef.current.pause();
-      }
-    };
+    setCurrentVideoIndex(0);
+  }, [videoList]);
 
-    const video = videoRef.current;
-
-    video.addEventListener("ended", playNextVideo);
-
-    return () => {
-      video.removeEventListener("ended", playNextVideo);
-    };
-  }, [totalVideos, playedVideosCount]);
-
-  useEffect(() => {
-    // Load the initial video
-    if (totalVideos > 0) {
-      videoRef.current.src = "static/anima/" + videoList[currentVideoIndex];
-      videoRef.current.play();
+  const handleVideoEnd = () => {
+    // Ensure we are not exceeding the length of the list
+    if (currentVideoIndex < videoList.length - 1) {
+      setCurrentVideoIndex(currentVideoIndex + 1); // Move to the next video
     }
-  }, [currentVideoIndex, videoList, totalVideos]);
+  };
+
+  // Ensure we have a valid video list and the index is within bounds
+  if (!videoList || videoList.length === 0) {
+    return <video
+    src={`static/anima/hello.mp4`}
+    autoPlay
+    
+    loop
+  ></video>;
+  }
 
   return (
-    <video ref={videoRef} controls width={"300px"} height={"100%"} src="static/Anima/hello.mp4" autoPlay muted>
-      Your browser does not support the video tag.
-    </video>
+    <video
+      src={`static/anima/${videoList[currentVideoIndex]}`}
+      controls
+      autoPlay
+      onEnded={handleVideoEnd}
+    ></video>
   );
 };
-const Speech = () => {
-  const [data, setData] = useState({
-    you_said: "",
-    isl_framed: "",
-    video_list: [],
-  });
-   
-  const fetchdata = () => {
-    const startButton = document.getElementById('start');
-    const outputDiv = document.getElementById('output');
-    let recognition = null;
-    
-        startButton.disabled = true;
-        startButton.textContent = 'Listening...';
-        recognition = new window.webkitSpeechRecognition(); // For Chrome
-        recognition.continuous = true;
-        recognition.interimResults = true;
-        let timeout;
-        recognition.onstart = () => {
-            console.log('Speech recognition started');
-        };
+async function videoExists(word) {
+  const avail_video = [
+    "a",
+    "accept",
+    "advise",
+    "afternoon",
+    "agree",
+    "all",
+    "always",
+    "arm",
+    "around",
+    "b",
+    "baby",
+    "back",
+    "bat",
+    "bear",
+    "beautiful",
+    "before",
+    "between",
+    "blind",
+    "bond",
+    "boring",
+    "bottle",
+    "boy",
+    "break",
+    "bucket",
+    "business",
+    "busy",
+    "butterfly",
+    "buy",
+    "c",
+    "calm",
+    "camera",
+    "can",
+    "capital",
+    "car",
+    "careless",
+    "change",
+    "chapati",
+    "charge",
+    "children",
+    "cinema",
+    "city",
+    "clean",
+    "clock",
+    "close",
+    "coin",
+    "come",
+    "company",
+    "compulsory",
+    "computer",
+    "condition",
+    "confident",
+    "country",
+    "cry",
+    "cup",
+    "cut",
+    "d",
+    "dam",
+    "decrease",
+    "discuss",
+    "dish",
+    "dislike",
+    "distance",
+    "diwali",
+    "do",
+    "doctor",
+    "dog",
+    "door",
+    "drama",
+    "drink",
+    "duck",
+    "during",
+    "e-mail",
+    "e",
+    "earth",
+    "earthquake",
+    "eat",
+    "education",
+    "election",
+    "Elephant",
+    "elephant",
+    "emergency",
+    "employment",
+    "empty",
+    "energy",
+    "enjoy",
+    "entertainment",
+    "equal",
+    "evening",
+    "excuseme",
+    "exercise",
+    "expensive",
+    "experiment",
+    "explain",
+    "extra",
+    "eye",
+    "f",
+    "face",
+    "fall",
+    "fan",
+    "farmer (2)",
+    "fat",
+    "father",
+    "fear",
+    "feel",
+    "few",
+    "fight",
+    "film",
+    "final",
+    "find",
+    "fine",
+    "finsh",
+    "fish",
+    "fishes",
+    "flag",
+    "flower",
+    "flute",
+    "follow",
+    "football",
+    "footpath",
+    "form",
+    "fraud",
+    "friend",
+    "funny",
+    "g",
+    "games",
+    "genuine",
+    "girl",
+    "give",
+    "glass",
+    "goal",
+    "good",
+    "government",
+    "grain",
+    "grandfather",
+    "grass",
+    "gravity",
+    "growth",
+    "guilty",
+    "gun",
+    "h",
+    "hair",
+    "hang",
+    "hardworking",
+    "health",
+    "heart",
+    "helicopter",
+    "hello",
+    "help",
+    "here",
+    "hindi",
+    "his",
+    "holiday",
+    "home",
+    "hot",
+    "hurt",
+    "i",
+    "icecream",
+    "j",
+    "jump",
+    "k",
+    "keep",
+    "kick",
+    "l",
+    "late",
+    "like",
+    "lion",
+    "love",
+    "m",
+    "meet",
+    "Monkey",
+    "monkey",
+    "month",
+    "morning",
+    "mother",
+    "my",
+    "n",
+    "name",
+    "never",
+    "o",
+    "open",
+    "p",
+    "parents",
+    "pen",
+    "play",
+    "push",
+    "q",
+    "r",
+    "run",
+    "s",
+    "sad",
+    "schoolbag",
+    "sing",
+    "sleep",
+    "sorry",
+    "special",
+    "stand",
+    "stir",
+    "store",
+    "study",
+    "sun",
+    "sunset",
+    "surprice",
+    "sweep",
+    "swim",
+    "t",
+    "table",
+    "tell",
+    "temperature",
+    "thankyou",
+    "think",
+    "this",
+    "time",
+    "tired",
+    "today",
+    "touch",
+    "train",
+    "tree",
+    "true",
+    "u",
+    "ugly",
+    "v",
+    "vision",
+    "w",
+    "walk",
+    "want",
+    "warn",
+    "week",
+    "welcome",
+    "what",
+    "when",
+    "where",
+    "who",
+    "why",
+    "win",
+    "x",
+    "y",
+    "year",
+    "you",
+    "z",
+  ];
+  if (avail_video.includes(word)) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
-        recognition.onerror = (event) => {
-            console.error('Speech recognition error:', event.error);
-            outputDiv.innerText = 'Error occurred. Please try again.';
-        };
-
-         recognition.onend = () => {
-             console.log(document.querySelector('#output').innerText)
-            console.log('Speech recognition ended');
-            startButton.textContent = 'Speak';
-            axios
-            .get("https://sanketgadhe366.pythonanywhere.com/islframing/"+outputDiv.innerText)
-            .then((response) => {
-              setData(response.data);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-            startButton.disabled = false;
-            startButton.textContent = 'Speak';
-           
-         };
-        recognition.onresult = (event) => {
-          let interimTranscript = '';
-          let finalTranscript = '';
-
-          for (let i = event.resultIndex; i < event.results.length; ++i) {
-              if (event.results[i].isFinal) {
-                  finalTranscript += event.results[i][0].transcript;
-              } else {
-                  interimTranscript += event.results[i][0].transcript;
-              }
-          }
-            outputDiv.innerText = finalTranscript;
-            clearTimeout(timeout);
-            timeout = setTimeout(function () {
-                recognition.stop(); // Stop recognition after a short delay
-            }, 1000);
-        };
-
-        if (recognition.running) {
-          recognition.stop();
-         
+async function textprocessing(sentence) {
+  sentence = sentence.toLowerCase();
+  sentence = sentence.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+  const words = sentence.split(" ");
+  const videoFiles = [];
+  const stopWords = [
+    "am",
+    "an",
+    "and",
+    "any",
+    "are",
+    "as",
+    "at",
+    "able",
+    "according",
+    "accordingly",
+    "across",
+    "actually",
+    "afterwards",
+    "allow",
+    "allows",
+    "almost",
+    "alone",
+    "along",
+    "already",
+    "also",
+    "although",
+    "always",
+    "among",
+    "amongst",
+    "another",
+    "anybody",
+    "anyhow",
+    "anyone",
+    "anything",
+    "anyway",
+    "anyways",
+    "anywhere",
+    "apart",
+    "appear",
+    "appreciate",
+    "appropriate",
+    "around",
+    "aside",
+    "ask",
+    "asking",
+    "associated",
+    "available",
+    "away",
+    "awfully",
+    "be",
+    "became",
+    "because",
+    "become",
+    "becomes",
+    "becoming",
+    "been",
+    "before",
+    "beforehand",
+    "behind",
+    "being",
+    "believe",
+    "below",
+    "beside",
+    "besides",
+    "best",
+    "better",
+    "between",
+    "beyond",
+    "both",
+    "brief",
+    "but",
+    "by",
+    "came",
+    "can",
+    "cannot",
+    "cause",
+    "causes",
+    "certain",
+    "certainly",
+    "changes",
+    "clearly",
+    "co",
+    "com",
+    "come",
+    "comes",
+    "concerning",
+    "consequently",
+    "consider",
+    "considering",
+    "contain",
+    "containing",
+    "contains",
+    "corresponding",
+    "could",
+    "course",
+    "currently",
+    "definitely",
+    "described",
+    "despite",
+    "did",
+    "didn",
+    "different",
+    "do",
+    "does",
+    "doing",
+    "done",
+    "down",
+    "downwards",
+    "during",
+    "each",
+    "edu",
+    "eg",
+    "eight",
+    "either",
+    "else",
+    "elsewhere",
+    "enough",
+    "entirely",
+    "especially",
+    "et",
+    "etc",
+    "even",
+    "ever",
+    "every",
+    "everybody",
+    "everyone",
+    "everything",
+    "everywhere",
+    "ex",
+    "exactly",
+    "example",
+    "except",
+    "far",
+    "few",
+    "fifth",
+    "first",
+    "five",
+    "followed",
+    "following",
+    "follows",
+    "for",
+    "former",
+    "formerly",
+    "forth",
+    "four",
+    "from",
+    "further",
+    "furthermore",
+    "get",
+    "gets",
+    "getting",
+    "given",
+    "gives",
+    "go",
+    "goes",
+    "going",
+    "gone",
+    "got",
+    "gotten",
+    "greetings",
+    "had",
+    "happens",
+    "hardly",
+    "has",
+    "have",
+    "having",
+    "he",
+    "hello",
+    "help",
+    "hence",
+    "her",
+    "here",
+    "hereafter",
+    "hereby",
+    "herein",
+    "hereupon",
+    "hers",
+    "herself",
+    "hi",
+    "him",
+    "himself",
+    "his",
+    "hither",
+    "hopefully",
+    "how",
+    "howbeit",
+    "however",
+    "ie",
+    "if",
+    "ignored",
+    "immediate",
+    "in",
+    "inasmuch",
+    "inc",
+    "indeed",
+    "indicate",
+    "indicated",
+    "indicates",
+    "inner",
+    "insofar",
+    "instead",
+    "into",
+    "inward",
+    "is",
+    "its",
+    "itself",
+    "just",
+    "keep",
+    "keeps",
+    "kept",
+    "know",
+    "known",
+    "knows",
+    "last",
+    "lately",
+    "later",
+    "latter",
+    "latterly",
+    "least",
+    "less",
+    "lest",
+    "let",
+    "like",
+    "liked",
+    "likely",
+    "little",
+    "look",
+    "looking",
+    "looks",
+    "ltd",
+    "mainly",
+    "many",
+    "may",
+    "maybe",
+    "me",
+    "mean",
+    "meanwhile",
+    "merely",
+    "might",
+    "more",
+    "moreover",
+    "most",
+    "mostly",
+    "much",
+    "must",
+    "my",
+    "myself",
+    "name",
+    "namely",
+    "nd",
+    "near",
+    "nearly",
+    "necessary",
+    "need",
+    "needs",
+    "neither",
+    "never",
+    "nevertheless",
+    "new",
+    "next",
+    "nine",
+    "no",
+    "nobody",
+    "non",
+    "none",
+    "noone",
+    "nor",
+    "normally",
+    "not",
+    "nothing",
+    "novel",
+    "now",
+    "nowhere",
+    "obviously",
+    "of",
+    "off",
+    "often",
+    "oh",
+    "ok",
+    "okay",
+    "old",
+    "on",
+    "once",
+    "one",
+    "ones",
+    "only",
+    "onto",
+    "or",
+    "other",
+    "others",
+    "otherwise",
+    "ought",
+    "our",
+    "ours",
+    "ourselves",
+    "out",
+    "outside",
+    "over",
+    "overall",
+    "own",
+    "particular",
+    "particularly",
+    "per",
+    "perhaps",
+    "placed",
+    "please",
+    "plus",
+    "possible",
+    "presumably",
+    "probably",
+    "provides",
+    "que",
+    "quite",
+    "qv",
+    "rather",
+    "rd",
+    "re",
+    "really",
+    "reasonably",
+    "regarding",
+    "regardless",
+    "regards",
+    "relatively",
+    "respectively",
+    "right",
+    "said",
+    "same",
+    "saw",
+    "say",
+    "saying",
+    "says",
+    "second",
+    "secondly",
+    "see",
+    "seeing",
+    "seem",
+    "seemed",
+    "seeming",
+    "seems",
+    "seen",
+    "self",
+    "selves",
+    "sensible",
+    "sent",
+    "serious",
+    "seriously",
+    "seven",
+    "several",
+    "shall",
+    "she",
+    "should",
+    ,
+    "since",
+    "six",
+    "so",
+    "some",
+    "somebody",
+    "somehow",
+    "someone",
+    "something",
+    "sometime",
+    "sometimes",
+    "somewhat",
+    "somewhere",
+    "soon",
+    "sorry",
+    "specified",
+    "specify",
+    "specifying",
+    "still",
+    "sub",
+    "such",
+    "sup",
+    "sure",
+    "take",
+    "taken",
+    "tell",
+    "tends",
+    "th",
+    "than",
+    "thank",
+    "thanks",
+    "thanx",
+    "that",
+    "thats",
+    "the",
+    "their",
+    "theirs",
+    "them",
+    "themselves",
+    "then",
+    "thence",
+    "there",
+    "thereafter",
+    "thereby",
+    "therefore",
+    "therein",
+    "theres",
+    "thereupon",
+    "these",
+    "they",
+    "think",
+    "third",
+    "this",
+    "thorough",
+    "thoroughly",
+    "those",
+    "though",
+    "three",
+    "through",
+    "throughout",
+    "thru",
+    "thus",
+    "to",
+    "together",
+    "too",
+    "took",
+    "toward",
+    "towards",
+    "tried",
+    "tries",
+    "truly",
+    "try",
+    "trying",
+    "twice",
+    "two",
+    "un",
+    "under",
+    "unfortunately",
+    "unless",
+    "unlikely",
+    "until",
+    "unto",
+    "up",
+    "upon",
+    "us",
+    "use",
+    "used",
+    "useful",
+    "uses",
+    "using",
+    "usually",
+    "value",
+    "various",
+    "very",
+    "via",
+    "viz",
+    "vs",
+    "want",
+    "wants",
+    "was",
+    "way",
+    "we",
+    "welcome",
+    "well",
+    "went",
+    "were",
+    "what",
+    "whatever",
+    "when",
+    "whence",
+    "whenever",
+    "where",
+    "whereafter",
+    "whereas",
+    "whereby",
+    "wherein",
+    "whereupon",
+    "wherever",
+    "whether",
+    "which",
+    "while",
+    "whither",
+    "who",
+    "whoever",
+    "whole",
+    "whom",
+    "whose",
+    "why",
+    "will",
+    "willing",
+    "wish",
+    "with",
+    "within",
+    "without",
+    "wonder",
+    "would",
+    "yes",
+    "yet",
+    "you",
+    "your",
+    "yours",
+    "yourself",
+    "yourselves",
+    "zero",
+  ];
+  const synonymDict = {
+    mother: "mother",
+    mummy: "mother",
+    mom: "mother",
+    maa: "mother",
+    father: "father",
+    dad: "father",
+    pop: "father",
+    papa: "father",
+    boy: "boy",
+    brother: "boy",
+    youth: "boy",
+    son: "boy",
+    young: "boy",
+    name: "name",
+    title: "name",
+    designation: "name",
+    you: "you",
+    yourself: "you",
+    "you-all": "you",
+    "you too": "you",
+    "thank you": "thank you",
+    "thanks a lot": "thank you",
+    "bless you": "thank you",
+    good: "good",
+    nice: "good",
+    approving: "good",
+    between: "between",
+    "in middle": "between",
+    connect: "between",
+    all: "all",
+    every: "all",
+    full: "all",
+    total: "all",
+    entier: "all",
+    agree: "agree",
+    grant: "agree",
+    admit: "agree",
+    confess: "agree",
+    accident: "accident",
+    injury: "accident",
+    mishape: "accident",
+    disaster: "accident",
+    whay: "why",
+    cause: "why",
+    do: "do",
+    doing: "do",
+    complete: "do",
+    execute: "do",
+    who: "who",
+    "that one": "who",
+    when: "when",
+    "the moment": "when",
+    ones: "when",
+    "that instance": "when",
+    what: "what",
+    win: "win",
+    succeed: "win",
+    secure: "win",
+    morning: "morning",
+    am: "morning",
+    morn: "morning",
+    afternoon: "afternoon",
+    "post meridiem": "afternoon",
+    pm: "afternoon",
+    lunchtime: "afternoon",
+    evening: "evening",
+    "late afternoon": "evening",
+    "end of day": "evening",
+    "close of day": "evening",
+    my: "my",
+    me: "my",
+    I: "me",
+    like: "like",
+    similar: "like",
+    same: "like",
+    identical: "like",
+    accept: "accept",
+    obtain: "accept",
+    gain: "accept",
+    earn: "accept",
+    acquire: "accept",
+    arm: "arm",
+    forelimb: "arm",
+    forehand: "arm",
+    apple: "apple",
+    fruit: "apple",
+    deserts: "apple",
+    beautiful: "beautiful",
+    attractive: "beautiful",
+    pretty: "beautiful",
+    handsome: "beautiful",
+    "good-looking": "beautiful",
+    car: "car",
+    automobile: "car",
+    motor: "car",
+    vehical: "car",
+    catch: "catch",
+    grab: "catch",
+    chapati: "chapati",
+    roti: "chapati",
+    come: "come",
+    doctor: "doctor",
+    physician: "doctor",
+    "medical practitioner": "doctor",
+    clinician: "doctor",
+    dog: "dog",
+    puppy: "dog",
+    drink: "drink",
+    eat: "eat",
+    food: "eat",
+    emergency: "emergency",
+    urgent: "emergency",
+    crisis: "emergency",
+    extremity: "emergency",
+    excuseme: "excuseme",
+    pardon: "excuseme",
+    fine: "fine",
+    excellent: "fine",
+    great: "fine",
+    friend: "friend",
+    companion: "friend",
+    coligue: "friend",
+    girl: "girl",
+    lady: "girl",
+    hello: "hello",
+    hi: "hello",
+    help: "help",
+    assist: "help",
+    aid: "help",
+    "help out": "help",
+    year: "year",
+    welcome: "welcome",
+    greeting: "welcome",
+    salutation: "welcome",
+    baby: "baby",
+    kid: "baby",
+    newborn: "baby",
+    child: "baby",
+    bear: "bear",
+    before: "before",
+    previously: "before",
+    earlier: "before",
+    change: "change",
+    convert: "change",
+    transform: "change",
+    close: "close",
+    near: "close",
+    adjacent: "close",
+    cry: "cry",
+    tear: "cry",
+    cut: "cut",
+    slit: "cut",
+    elephant: "elephant",
+    gaint: "elephant",
+    enjoy: "enjoy",
+    celebrate: "enjoy",
+    face: "look",
+    expression: "face",
+    look: "look",
+    appearance: "face",
+    fall: "fall",
+    drop: "fall",
+    "drop down": "fall",
+    give: "give",
+    offer: "give",
+    proffer: "give",
+    go: "go",
+    move: "go",
+    proceed: "go",
+    grandfather: "grandfather",
+    grandpa: "grandfather",
+    grandmother: "grandmother",
+    grandma: "grandmother",
+    hair: "hair",
+    "hair style": "hair",
+    hang: "hang",
+    dangle: "hang",
+    swing: "hang",
+    happy: "happy",
+    willing: "happy",
+    glad: "happy",
+    health: "health",
+    healthiness: "health",
+    fitness: "health",
+    "well-being": "health",
+    home: "home",
+    house: "home",
+    apartment: "home",
+    hospital: "hospital",
+    "health centre": "hospital",
+    clinic: "hospital",
+    how: "how",
+    jump: "jump",
+    bounce: "jump",
+    skip: "jump",
+    keep: "keep",
+    store: "keep",
+    "put away": "keep",
+    kick: "kick",
+    "give up": "leave",
+    leave: "leave",
+    quit: "leave",
+    lion: "lion",
+    hero: "lion",
+    lionheart: "lion",
+    overlook: "look",
+    front: "look",
+    love: "love",
+    "best wishes": "love",
+    regards: "love",
+    luck: "luck",
+    "good luck": "luck",
+    success: "luck",
+    successfulness: "luck",
+    make: "make",
+    construct: "make",
+    build: "make",
+    assemble: "make",
+    meet: "meet",
+    gather: "meet",
+    method: "method",
+    procedure: "method",
+    technique: "method",
+    system: "method",
+    monkey: "monkey",
+    month: "month",
+    open: "open",
+    pen: "pen",
+    pencil: "pen",
+    place: "place",
+    location: "place",
+    site: "place",
+    spot: "place",
+    play: "play",
+    relax: "play",
+    rest: "sleep",
+    please: "please",
+    request: "please",
+    push: "push",
+    send: "push",
+    press: "push",
+    run: "run",
+    race: "run",
+    hurry: "run",
+    sad: "sad",
+    unhappy: "sad",
+    see: "see",
+    vision: "see",
+    shout: "shout",
+    sleep: "sleep",
+    nap: "sleep",
+    doze: "sleep",
+    sorry: "sorry",
+    guilty: "sleep",
+    tell: "tell",
+    speak: "tell",
+    talk: "tell",
+    stand: "stand",
+    rise: "stand",
+    "get up": "sleep",
+    stir: "stir",
+    mix: "stir",
+    blend: "stir",
+    study: "study",
+    learning: "study",
+    education: "study",
+    schooling: "study",
+    sunset: "sunset",
+    surprise: "surprise",
+    shock: "surprise",
+    brush: "sweep",
+    clean: "sweep",
+    scrub: "sweep",
+    wipe: "sweep",
+    table: "table",
+    bench: "table",
+    desk: "table",
+    take: "take",
+    hold: "take",
+    capture: "take",
+    think: "think",
+    memories: "think",
+    this: "this",
+    time: "time",
+    moment: "time",
+    point: "time",
+    today: "today",
+    now: "today",
+    present: "today",
+    touch: "touch",
+    ugly: "ugly",
+    unattractive: "ugly",
+    plain: "ugly",
+    walk: "walk",
+    climb: "walk",
+    scroll: "walk",
+    warn: "warn",
+    notify: "warn",
+    alert: "warn",
+    wash: "wash",
+    sponge: "wash",
+    week: "week",
+    where: "where",
+    which: "which",
+    why: "why",
+    work: "work",
+    always: "always",
+    "every time": "always",
+    "all time": "always",
+    around: "around",
+    "all side": "always",
+    throught: "always",
+    "all over": "around",
+    back: "back",
+    rear: "back",
+    "other side": "back",
+    end: "back",
+    boring: "boring",
+    dull: "boring",
+    tedious: "boring",
+    repetitive: "boring",
+    bottle: "bottle",
+    container: "bottle",
+    flask: "bottle",
+    break: "break",
+    smash: "break",
+    creck: "break",
+    bucket: "bucket",
+    business: "business",
+    work: "business",
+    career: "business",
+    profession: "business",
+    butterfly: "buterfly",
+    insect: "buterfly",
+    moth: "buterfly",
+    flying: "buterfly",
+    busy: "busy",
+    engaged: "busy",
+    "involved in": "busy",
+    buy: "buy",
+    purchase: "buy",
+    get: "buy",
+    take: "buy",
+    call: "call",
+    "hey listen": "call",
+    camera: "camera",
+    webcam: "camera",
+    cam: "camera",
+    can: "can",
+    children: "children",
+    child: "children",
+    babys: "children",
+    city: "city",
+    town: "city",
+    place: "town",
+    clean: "clean",
+    washed: "clean",
+    cleaned: "clean",
+    clock: "clock",
+    timepiece: "clock",
+    timekeeper: "clock",
+    timer: "clock",
+    company: "company",
+    bureau: "company",
+    institution: "company",
+    organization: "company",
+    Condition: "Condition",
+    state: "Condition",
+    shape: "form",
+    order: "Condition",
+    dam: "dam",
+    barrage: "dam",
+    barrier: "dam",
+    wall: "dam",
+    discuss: "discuss",
+    "talk over": "discuss",
+    "talk about": "discuss",
+    distance: "distance",
+    interval: "distance",
+    space: "distance",
+    span: "distance",
+    gap: "distance",
+    diwali: "diwali",
+    festival: "diwali",
+    drama: "drama",
+    play: "drama",
+    show: "entertenment",
+    duck: "duck",
+    cower: "duck",
+    cringe: "duck",
+    during: "during",
+    throughout: "during",
+    through: "during",
+    earn: "earn",
+    gain: "earn",
+    make: "earn",
+    earth: "earth",
+    world: "earth",
+    globe: "earth",
+    planet: "earth",
+    earthquake: "earthquake",
+    disaster: "emergency",
+    education: "education",
+    learning: "education",
+    "e-mail": "e-mail",
+    communication: "e-mail",
+    news: "e-mail",
+    emergency: "emergency",
+    accident: "emergency",
+    empty: "empty",
+    vacant: "empty",
+    unoccupied: "empty",
+    energy: "energy",
+    power: "energy",
+    equal: "equal",
+    identical: "equal",
+    uniform: "equal",
+    alike: "equal",
+    expensive: "expensive",
+    "high-cost": "expensive",
+    costly: "expensive",
+    exercise: "exercise",
+    movement: "exercise",
+    exertion: "exercise",
+    experiment: "experiment",
+    test: "experiment",
+    investigation: "experiment",
+    explain: "explain",
+    describe: "explain",
+    "spell out": "explain",
+    extra: "extra",
+    more: "extra",
+    additional: "extra",
+    added: "extra",
+    eye: "eye",
+    eyeball: "eye",
+    farmer: "farmer",
+    agriculturalist: "farmer",
+    feel: "feel",
+    perceive: "feel",
+    sense: "feel",
+    few: "few",
+    small: "few",
+    film: "film",
+    layer: "film",
+    coat: "film",
+    final: "final",
+    last: "final",
+    closing: "final",
+    flag: "flag",
+    banner: "flag",
+    standard: "flag",
+    flower: "flower",
+    flute: "flute",
+    whistle: "flute",
+    football: "football",
+    form: "form",
+    funny: "funny",
+    amusing: "funny",
+    humorous: "funny",
+    comic: "funny",
+    ghee: "ghee",
+    government: "government",
+    administration: "government",
+    executive: "government",
+    growth: "growth",
+    expansion: "growth",
+    development: "growth",
+    progress: "growth",
+    guilty: "guilty",
+    ashamed: "guilty",
+    ridden: "guilty",
+    guilt: "guilty",
+    here: "here",
+    hindi: "hindi",
+    language: "hindi",
+    late: "late",
+    delayed: "late",
+    mother: "mother",
+    mummy: "mother",
+    mom: "mother",
+    never: "never",
+    "not at all": "never",
+    no: "never",
+    parent: "parent",
+    schoolbag: "schoolbag",
+    bag: "schoolbag",
+    sing: "sing",
+    special: "special",
+    exceptional: "special",
+    particular: "special",
+    "extra special": "special",
+    store: "store",
+    supply: "store",
+    stock: "store",
+    sun: "sun",
+    swim: "swim",
+    bathe: "swim",
+    dip: "swim",
+    float: "swim",
+    tempreture: "tempreture",
+    climate: "tempreture",
+    humidity: "tempreture",
+    tired: "tired",
+    exhausted: "tired",
+    fatigued: "tired",
+    train: "train",
+    tree: "tree",
+    true: "true",
+    truth: "true",
+    fact: "fact",
+    want: "want",
+    advice: "advice",
+    guidance: "advice",
+    advising: "advice",
+    bat: "bat",
+    blind: "blind",
+    "visually impaired": "blind",
+    unsighted: "blind",
+    bond: "bond",
+    friendship: "bond",
+    relationship: "bond",
+    calm: "calm",
+    relaxed: "calm",
+    capital: "capital",
+    careless: "careless",
+    casual: "careless",
+    effortless: "careless",
+    charge: "chicken",
+    cinema: "cinema",
+    movie: "cinema",
+    coffee: "coffee",
+    coin: "coin",
+    compulsory: "compulsory",
+    mandatory: "compulsory",
+    computer: "computer",
+    PC: "computer",
+    confident: "confident",
+    certain: "confident",
+    positive: "confident",
+    convinced: "confident",
+    country: "country",
+    nation: "country",
+    cup: "cup",
+    decrease: "decrease",
+    low: "decrease",
+    dish: "dish",
+    bowl: "dish",
+    plate: "dish",
+    dislike: "dislike",
+    hate: "dislike",
+    detest: "dislike",
+    door: "door",
+    election: "election",
+    vote: "election",
+    poll: "election",
+    employment: "employment",
+    hiring: "employment",
+    hire: "employment",
+    entertenment: "entertenment",
+    performance: "entertenment",
+    fake: "fake",
+    fan: "fan",
+    fear: "fear",
+    terror: "fear",
+    fright: "fear",
+    fight: "fight",
+    find: "find",
+    discover: "find",
+    realize: "find",
+    observe: "find",
+    follow: "follow",
+    shadow: "follow",
+    footpath: "footpath",
+    road: "footpath",
+    fraud: "fraud",
+    cheating: "fraud",
+    games: "games",
+    sport: "games",
+    activity: "games",
+    genuine: "genuine",
+    real: "genuine",
+    actual: "genuine",
+    original: "genuine",
+    glass: "glass",
+    goal: "goal",
+    aim: "goal",
+    objective: "goal",
+    grain: "grain",
+    grass: "grass",
+    gravity: "gravity",
+    attraction: "gravity",
+    pull: "gravity",
+    gun: "gun",
+    weapon: "gun",
+    hardworking: "hardworking",
+    heart: "heart",
+    emotions: "heart",
+    feelings: "heart",
+    helicopter: "helicopter",
+    his: "his",
+    holiday: "holiday",
+    weekend: "holiday",
+    sunday: "holiday",
+    hot: "hot",
+    hurt: "hurt",
+    injure: "hurt",
+    wound: "hurt",
+    damage: "hurt",
+    icecream: "icecream",
+    cold: "icecream",
+    sweet: "icecream",
+    desert: "icecream",
+  };
+  const isl_framed = [];
+  for (let word of words) {
+    if (await videoExists(word)) {
+      videoFiles.push(`${word}.mp4`);
+      isl_framed.push(`${word}`);
+    } else {
+      const baseWord = synonymDict[word];
+      if (baseWord && (await videoExists(baseWord))) {
+        videoFiles.push(`${baseWord}.mp4`);
+        isl_framed.push(`${baseWord}`);
+      } else if (stopWords.includes(word.toLowerCase())) {
+        continue;
       } else {
-          recognition.start();
-          startButton.textContent = 'Listening...';
-      }
-    
-
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            if (recognition) {
-                recognition.stop();
-                startButton.disabled = false;
-                startButton.textContent = 'Speak';
-                axios
-                .get("https://sanketgadhe366.pythonanywhere.com/islframing/"+outputDiv.innerText)
-                .then((response) => {
-                  setData(response.data);
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
-            }
+        isl_framed.push(`${word}`);
+        for (let char of word) {
+          if (await videoExists(char)) {
+            videoFiles.push(`${char}.mp4`);
+          }
         }
+      }
+    }
+  }
+  isl_framed[0] =
+    isl_framed[0][0].toUpperCase() +
+    isl_framed[0].slice(1, isl_framed[0].length);
+  return [videoFiles, isl_framed];
+}
+
+const Speech = () => {
+  const [data, setData] = useState({});
+
+  const fetchdata = () => {
+    const startButton = document.getElementById("start");
+    const outputDiv = document.getElementById("output");
+    let recognition = null;
+    startButton.disabled = true;
+    startButton.textContent = "Listening...";
+    recognition = new window.webkitSpeechRecognition(); // For Chrome
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    let timeout;
+    recognition.onstart = () => {
+      console.log("Speech recognition started");
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      outputDiv.innerText = "Error occurred. Please try again.";
+    };
+
+    recognition.onend = async () => {
+      const process_ans = await textprocessing(
+        document.querySelector("#output").innerText
+      );
+      const processed_text = process_ans[0];
+      const isl_framed = process_ans[1].join(" ");
+      setData({ isl_framed: isl_framed, video_list: processed_text });
+      console.log("Videos To Show", processed_text);
+      console.log("Speech recognition ended");
+      startButton.textContent = "Speak";
+      startButton.disabled = false;
+      startButton.textContent = "Speak";
+    };
+    recognition.onresult = (event) => {
+      let interimTranscript = "";
+      let finalTranscript = "";
+
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript;
+        } else {
+          interimTranscript += event.results[i][0].transcript;
+        }
+      }
+      outputDiv.innerText = finalTranscript;
+      clearTimeout(timeout);
+      timeout = setTimeout(function () {
+        recognition.stop(); // Stop recognition after a short delay
+      }, 1000);
+    };
+
+    if (recognition.running) {
+      recognition.stop();
+    } else {
+      recognition.start();
+      startButton.textContent = "Listening...";
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        if (recognition) {
+          recognition.stop();
+          startButton.disabled = false;
+          startButton.textContent = "Speak";
+        }
+      }
     });
-   
   };
   let videoList = data.video_list;
-  useEffect(() => {
-    console.log("Data", data);
-  }, [data]);
+
   return (
     <div className="mt-16 px-4 md:px-0">
       {/* Heading */}
@@ -151,12 +1512,17 @@ const Speech = () => {
         {/* Video Player */}
         <div className="video bg-[#202020] flex px-8 py-6 rounded-xl md:w-1/3 md:h-fit justify-center">
           <VideoPlayer videoList={videoList} />
+          {/* {videoList.map((single,index)=>(
+          <video src={`static/anima/${single}`}></video>
+          ))
+
+          } */}
         </div>
 
         {/* Speech Recognition */}
         <div className="content w-full md:w-2/3">
           <div className="cohead font-bold text-2xl">
-            Directly translate the audio into Animated Sign Language 
+            Directly translate the audio into Animated Sign Language
           </div>
           <div className="subcohead mt-4">
             <div className="yousaid">
@@ -170,11 +1536,14 @@ const Speech = () => {
           </div>
           <div className="flex justify-start mt-6">
             <div className="capbutton rounded-xl px-8 py-4 bg-[#202020] text-white flex justify-center items-center text-lg font-bold">
-              <button id="start"    onClick={() => {
-                  var audio = document.getElementById('myAudio');
-                  audio.play();   
+              <button
+                id="start"
+                onClick={() => {
+                  var audio = document.getElementById("myAudio");
+                  audio.play();
                   fetchdata();
-                }}>
+                }}
+              >
                 <div className="flex items-center gap-1">
                   Speak <FaMicrophone />
                 </div>
@@ -206,7 +1575,10 @@ const Speech = () => {
           communicate with Deaf people. Within this short period, I learned a
           lot about deaf people and their cultures and sign language. Now I am
           so confident that{" "}
-          <i className="special">I can communicate with deaf community and can help them in finding solutions for their problems.</i>{" "}
+          <i className="special">
+            I can communicate with deaf community and can help them in finding
+            solutions for their problems.
+          </i>{" "}
           Our instructor Akash sir taught us very well. He never gets tired of
           clarifying our doubts. He made those classes filled with entertainment
           and we totally enjoyed those classes. Finally learning a new language
@@ -216,15 +1588,15 @@ const Speech = () => {
       </div>
 
       {/* How to Translate Sign Language */}
-        <div className="mt-5 videobox flex justify-center">
-          <video
-            src="static/review.mp4"
-            width="40%"
-            controls
-            className="rounded-lg"
-            autoPlay
-          ></video>
-        </div>
+      <div className="mt-5 videobox flex justify-center">
+        <video
+          src="static/review.mp4"
+          width="40%"
+          controls
+          className="rounded-lg"
+          autoPlay
+        ></video>
+      </div>
       <div className="use mt-32">
         <div className="heading text-center font-bold text-3xl">
           How to Translate Sign Language
@@ -232,7 +1604,13 @@ const Speech = () => {
         <div className="steps flex flex-col md:flex-row justify-between items-center mt-9 px-8">
           <div className="card mb-5 md:mb-0">
             <div className="head text-2xl font-bold flex items-center">
-              <img src="static/icons8-mic-50.png" alt="" width="30px" height="30px" className="mr-2" />
+              <img
+                src="static/icons8-mic-50.png"
+                alt=""
+                width="30px"
+                height="30px"
+                className="mr-2"
+              />
               Step 1. Capture Spoken Words
             </div>
             <div className="inf mt-2">
@@ -242,7 +1620,13 @@ const Speech = () => {
           </div>
           <div className="card mb-5 md:mb-0">
             <div className="head text-2xl font-bold flex items-center">
-              <img src="static/icons8-translation-30.png" alt="" width="30px" height="30px" className="mr-2" />
+              <img
+                src="static/icons8-translation-30.png"
+                alt=""
+                width="30px"
+                height="30px"
+                className="mr-2"
+              />
               Step 2. Translate Word To Sign Language
             </div>
             <div className="inf mt-2">
@@ -252,7 +1636,13 @@ const Speech = () => {
           </div>
           <div className="card ">
             <div className="head text-2xl font-bold flex items-center">
-              <img src="static/icons8-sign-language-50.png" alt="" width="30px" height="30px" className="mr-2" />
+              <img
+                src="static/icons8-sign-language-50.png"
+                alt=""
+                width="30px"
+                height="30px"
+                className="mr-2"
+              />
               Step 3. Display Sign Language Gesture
             </div>
             <div className="inf mt-2">

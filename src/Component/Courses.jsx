@@ -35,7 +35,7 @@ const Courses = () => {
   // Render categories
   const renderCategories = () => {
     return categories.map((category, index) => (
-      <Iconscard src={index+1} name={category} />
+      <Iconscard src={index+1} name={category} key={index} />
     ));
   };
 
