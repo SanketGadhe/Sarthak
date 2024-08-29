@@ -20,7 +20,7 @@ const VideoPlayer = ({ videoList }) => {
     return <video
     src={`static/anima/hello.mp4`}
     autoPlay
-    
+    muted
     loop
   ></video>;
   }
@@ -30,6 +30,7 @@ const VideoPlayer = ({ videoList }) => {
       src={`static/anima/${videoList[currentVideoIndex]}`}
       controls
       autoPlay
+      muted
       onEnded={handleVideoEnd}
     ></video>
   );
